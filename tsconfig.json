@@ -1,0 +1,20 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "types": [
+            "node",
+            "es6-promise"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "module": "commonjs",
+    "lib": [
+        "es2015",
+        "dom"
+    ],
+    "target": [
+        "es2015"
+    ]
+}

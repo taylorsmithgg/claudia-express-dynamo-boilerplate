@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "svm-counter-executor",
+    "name": "svm-counter",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "qq5eoveh0d"
+  }
+}
