@@ -2,7 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
 import * as AWS from "aws-sdk";
 import AtomicCounter = require('dynamodb-atomic-counter');
-const config = require('../../private/config.json');
+const config = require('../configurations/config.json');
 
 interface Options {
   tableName?;

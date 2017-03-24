@@ -61,6 +61,11 @@ var Server = (function () {
         //configure pug
         // this.app.set("views", path.join(__dirname, "views"));
         // this.app.set("view engine", "pug");
+        this.app.use(function (req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+        });
         //use logger middlware
         this.app.use(logger("dev"));
         //use json form parser middlware

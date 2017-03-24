@@ -13,7 +13,7 @@ exports.__esModule = true;
 var route_1 = require("./route");
 var AWS = require("aws-sdk");
 var AtomicCounter = require("dynamodb-atomic-counter");
-var config = require('../../private/config.json');
+var config = require('../configurations/config.json');
 /**
  * / route
  *

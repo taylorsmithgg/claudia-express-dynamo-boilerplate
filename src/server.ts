@@ -72,6 +72,12 @@ public config() {
   // this.app.set("views", path.join(__dirname, "views"));
   // this.app.set("view engine", "pug");
 
+  this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  })
+
   //use logger middlware
   this.app.use(logger("dev"));
 
