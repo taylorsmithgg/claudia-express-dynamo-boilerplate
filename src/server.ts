@@ -123,3 +123,4 @@ public config() {
     this.app.use(router);
   }
 }
+module.exports = Server.bootstrap().app;

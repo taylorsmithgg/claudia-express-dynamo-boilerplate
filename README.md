@@ -9,17 +9,28 @@
   AmazonAPIGatewayAdministrator
 
 ### Build
-  `gulp`
-  `grunt`
+#### First, make sure typescript is up to date
+  ```
+  npm i -g typescript
+  ```
+
+#### Then  
+  ```
+  npm i
+  gulp
+  ```
+
+  or
+
+  ```
+  grunt
+  ```
 
 ### Run w/Hot Reload
   `npm run dev`
 
 ### Convert Express to Serverless
   `claudia generate-serverless-express-proxy --express-module dist/server`
-
-### Important: in server.js
-  ```module.exports = Server.bootstrap().app;```
 
 ### Deploy (https://claudiajs.com/tutorials/installing.html)
   `claudia create --handler lambda.handler --deploy-proxy-api --region us-east-1`
