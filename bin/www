@@ -8,10 +8,13 @@ var http = require("http");
 
 //create http server
 var httpPort = normalizePort(process.env.PORT || 4200);
-console.log('Running on: port', httpPort);
+
 var app = server.Server.bootstrap().app;
+
 app.set("port", httpPort);
 var httpServer = http.createServer(app);
+
+console.log('Running on: port', httpPort);
 
 //listen on provided ports
 httpServer.listen(httpPort);

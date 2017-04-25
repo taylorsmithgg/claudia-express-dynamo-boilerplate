@@ -17,18 +17,6 @@ export class Server {
   public app: express.Application;
 
   /**
-   * Bootstrap the application.
-   *
-   * @class Server
-   * @method bootstrap
-   * @static
-   * @return {ng.auto.IInjectorService} Returns the newly created injector for this app.
-   */
-  public static bootstrap(): Server {
-    return new Server();
-  }
-
-  /**
    * Constructor.
    *
    * @class Server
@@ -46,6 +34,18 @@ export class Server {
 
     //add api
     this.api();
+  }
+
+  /**
+   * Bootstrap the application.
+   *
+   * @class Server
+   * @method bootstrap
+   * @static
+   * @return {ng.auto.IInjectorService} Returns the newly created injector for this app.
+   */
+  public static bootstrap(): Server {
+    return new Server();
   }
 
   /**
@@ -123,4 +123,5 @@ public config() {
     this.app.use(router);
   }
 }
-module.exports = Server.bootstrap().app;
+
+module.exports['bootstrap'] = Server.bootstrap().app;
