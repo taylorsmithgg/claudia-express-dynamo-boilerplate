@@ -53,7 +53,7 @@ module.exports = function(grunt) {
     watch: {
       ts: {
         files: ["src/\*\*/\*.ts"],
-        tasks: ["ts"]
+        tasks: ["default"]
       },
       views: {
         files: ["views/**/*.pug"],

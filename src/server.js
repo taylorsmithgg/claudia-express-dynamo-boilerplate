@@ -7,6 +7,7 @@ var logger = require("morgan");
 var errorHandler = require("errorhandler");
 var methodOverride = require("method-override");
 var index_1 = require("./routes/index");
+console.log('bs');
 var Server = (function () {
     function Server() {
         this.app = express();
