@@ -42,7 +42,7 @@ gulp.task('tslint', () => {
 });
 
 gulp.task('compile', shell.task([
-  'npm run tsc',
+  'npm run tsc -p',
 ]))
 
 /**
