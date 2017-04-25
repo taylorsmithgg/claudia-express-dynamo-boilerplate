@@ -9,24 +9,13 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var route_1 = require("./route");
 var AWS = require("aws-sdk");
 var AtomicCounter = require("dynamodb-atomic-counter");
 var config = require('../configurations/config.json');
-/**
- * / route
- *
- * @class User
- */
 var IndexRoute = (function (_super) {
     __extends(IndexRoute, _super);
-    /**
-     * Constructor
-     *
-     * @class IndexRoute
-     * @constructor
-     */
     function IndexRoute() {
         var _this = _super.call(this) || this;
         _this.config = new AWS.Config(config);
@@ -40,15 +29,7 @@ var IndexRoute = (function (_super) {
         };
         return _this;
     }
-    /**
-     * Create the routes.
-     *
-     * @class IndexRoute
-     * @method create
-     * @static
-     */
     IndexRoute.create = function (router) {
-        //log
         console.log("[IndexRoute::create] Creating index route.");
         router.get("/:company/current", function (req, res, next) {
             new IndexRoute().get(req, res, next);
@@ -57,28 +38,8 @@ var IndexRoute = (function (_super) {
         router.get("/:company/next", function (req, res, next) {
             new IndexRoute().getNext(req, res, next);
         });
-        // router.post("/:company", (req: Request, res: Response, next: NextFunction) => {
-        //   new IndexRoute().post(req, res, next);
-        // });
     };
-    /**
-     * The home page route.
-     *
-     * @class IndexRoute
-     * @method index
-     * @param req {Request} The express Request object.
-     * @param res {Response} The express Response object.
-     * @next {NextFunction} Execute the next method.
-     */
     IndexRoute.prototype.index = function (req, res, next) {
-        // //set custom title
-        // this.title = "Home | Tour of Heros";
-        // //set options
-        // let options: Object = {
-        //   "message": "Welcome to the Tour of Heros"
-        // };
-        // //render template
-        // this.render(req, res, "index", options);
         res.json(req.body);
     };
     IndexRoute.prototype.get = function (req, res, next) {
@@ -105,3 +66,4 @@ var IndexRoute = (function (_super) {
     return IndexRoute;
 }(route_1.BaseRoute));
 exports.IndexRoute = IndexRoute;
+//# sourceMappingURL=index.js.map

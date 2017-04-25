@@ -1,3 +1,5 @@
+const buildDir = './dist';
+
 module.exports = function(grunt) {
   "use strict";
 
@@ -5,6 +7,12 @@ module.exports = function(grunt) {
     copy: {
       build: {
         files: [
+          {
+            expand: true,
+            cwd: './src/configurations',
+            src: ['**'],
+            dest: buildDir + '/configurations'
+          },
           {
             expand: true,
             cwd: "./private",
@@ -27,6 +35,9 @@ module.exports = function(grunt) {
       }
     },
     ts: {
+      default: {
+        tsconfig: './tsconfig.json',
+      },
       app: {
         files: [{
           src: ["src/\*\*/\*.ts", "!src/.baseDir.ts"],
@@ -48,11 +59,13 @@ module.exports = function(grunt) {
         files: ["views/**/*.pug"],
         tasks: ["copy"]
       }
-    }
+    },
+    clean: [buildDir]
   });
 
   grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-contrib-watch");
+  grunt.loadNpmTasks("grunt-contrib-clean");  
   grunt.loadNpmTasks("grunt-ts");
 
   grunt.registerTask("default", [

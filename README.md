@@ -17,10 +17,13 @@
 #### Then  
   ```
   npm i
+  ```
+
+  ```
   gulp
   ```
 
-  or
+  or (depending on your preference)
 
   ```
   grunt
