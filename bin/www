@@ -9,9 +9,9 @@ var http = require("http");
 //create http server
 var httpPort = normalizePort(process.env.PORT || 4200);
 
-console.log(server);
-var app = server.default.bootstrap().app;
+var app = server().app;
 
+console.log(app);
 app.set("port", httpPort);
 var httpServer = http.createServer(app);
 

@@ -104,5 +104,5 @@ var Server = (function () {
     return Server;
 }());
 exports.Server = Server;
-module.exports['bootstrap'] = Server.bootstrap().app;
-module.exports = Server.bootstrap().app;
+module.exports['app'] = Server.bootstrap().app;
+module.exports = Server.bootstrap;
