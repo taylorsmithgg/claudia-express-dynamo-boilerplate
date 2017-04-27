@@ -1,3 +1,4 @@
 .dist
 .tscache
 node_modules
+claudia.json
