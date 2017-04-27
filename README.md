@@ -2,36 +2,38 @@
   Make sure there's a table named "AtomicCounters", with "id" (string) as the primary hash key, in your AWS account.
   /configurations/config.json - stores amazon credentials
 
+### **<span style="color: red">Important!</span>**
+  You must add `AmazonDynamoDBFullAccess` policy to your executor role.
+
 ### Permissions
   APIGatewayAdministrator
   IAMFullAccess (Creates role for svm-counter-executor)
-  AmazonDynamoDBFullAccess
   AmazonAPIGatewayAdministrator
 
 ### Build
 #### First, make sure typescript is up to date
-  ```
+```
   npm i -g typescript
-  ```
+```
 
-#### Then  
-  ```
+#### Then, build the project using either gulp or grunt
+```
   npm i
-  ```
+```
 
-  ```
+```
   gulp
-  ```
+```
 
   or (depending on your preference)
 
-  ```
+```
   grunt
-  ```
+```
 
 ### Run w/Hot Reload
 ```
-npm run dev
+  npm run dev
 ```
 
 ### Convert Express to Serverless
@@ -46,5 +48,12 @@ npm run dev
 
 ### Update Deployment/Redeploy
 ``` 
-claudia update 
+  claudia update 
+```
+
+### Delete Deployment/Roles
+### **<span style="color: red">Important!</span>**
+  You must remove `AmazonDynamoDBFullAccess` policy from your executor role before running destroy.
+```
+  claudia destroy
 ```

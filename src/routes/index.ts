@@ -4,6 +4,27 @@ import * as AWS from "aws-sdk";
 import AtomicCounter = require('dynamodb-atomic-counter');
 const config = require('../configurations/config.json');
 
+/**
+ * Default name of the DynamoDB table where the atomic counters will be stored.
+ */
+const DEFAULT_TABLE_NAME = 'AtomicCounters';
+
+/**
+ * Default attribute name that will identify each counter.
+ */
+const	DEFAULT_KEY_ATTRIBUTE = 'id';
+
+	/**
+	 * Default attribute name of the count value attribute.
+	 * The count attribute indicates the "last value" used in the last increment operation.
+	 */
+const	DEFAULT_COUNT_ATTRIBUTE = 'lastValue';
+
+	/**
+	 * Default increment value.
+	 */
+const	DEFAULT_INCREMENT = 1;
+
 interface Options {
   tableName?;
   keyAttribute?;
@@ -23,7 +44,7 @@ interface Options {
 export class IndexRoute extends BaseRoute {
 
   private dynamoDbClient : AWS.DynamoDB.DocumentClient;
-  private dynamoDb :  AWS.DynamoDB;
+  private dynamo :  AWS.DynamoDB;
   private options: Options;
   private config: AWS.Config = new AWS.Config(config);
   private credentials: AWS.Credentials;
@@ -38,7 +59,7 @@ export class IndexRoute extends BaseRoute {
   constructor() {
     super();
     this.dynamoDbClient = new AWS.DynamoDB.DocumentClient();
-    this.dynamoDb = new AWS.DynamoDB();
+    this.dynamo = new AWS.DynamoDB(config);
     this.atomic = AtomicCounter;
 
     this.atomic.config.update(this.config);
@@ -61,7 +82,7 @@ export class IndexRoute extends BaseRoute {
     console.log("[IndexRoute::create] Creating index route.");
 
     router.get("/:company/current", (req: Request, res: Response, next: NextFunction) => {
-      new IndexRoute().get(req, res, next);0
+      new IndexRoute().get(req, res, next);
     });
 
     router.get("/:company/next", (req: Request, res: Response, next: NextFunction) => {
@@ -97,12 +118,21 @@ export class IndexRoute extends BaseRoute {
   }
 
   public get(req: Request, res: Response, next: NextFunction){
-      this.atomic.getLastValue(req.params.company)
-        .done(function(value){ return res.json(100000000 + value); })
-        .fail(function(err){
-          console.log(err);
-          return res.json({error: err}); 
-        })
+    const request = {
+      Key: {id: {'S': req.params.company}},
+      TableName: 'AtomicCounters'
+    };
+
+    return this.dynamo.getItem(request, (err, data) => {
+      if (err) {
+        console.log(err); // an error occurred
+        return res.json({error: err});
+      } else {
+        console.log(data); // successful response
+        res.json(100000000 + parseInt(data.Item.lastValue.N));          
+      }
+      return next();
+    });
   }
 
   public getNext(req: Request, res: Response, next: NextFunction){
@@ -118,5 +148,18 @@ export class IndexRoute extends BaseRoute {
 
   public post(req: Request, res: Response, next: NextFunction){
     res.json(this.atomic);
+  }
+
+  private getLastValue( counterId ) {
+    let request;
+    const keyAttribute = config.keyAttribute || DEFAULT_KEY_ATTRIBUTE;
+    const countAttribute = config.countAttribute || DEFAULT_COUNT_ATTRIBUTE;
+    const params = {
+        Key: {},
+        AttributesToGet: [ countAttribute ],
+        TableName: config.tableName || DEFAULT_TABLE_NAME
+    };
+
+    params.Key[ keyAttribute ] = { S: counterId };   
   }
 }

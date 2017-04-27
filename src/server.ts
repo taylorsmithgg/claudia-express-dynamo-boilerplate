@@ -124,5 +124,4 @@ public config() {
   }
 }
 
-module.exports['app'] = Server.bootstrap().app;
-module.exports = Server.bootstrap;
+module.exports = Server.bootstrap().app;
