@@ -53,6 +53,7 @@
     "gulp-typescript": "^3.1.6",
     "nodemon": "^1.11.0",
     "tslint": "^4.5.1",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.1",
+    "claudia": "^2.12.1"
   }
 }
