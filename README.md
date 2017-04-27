@@ -30,13 +30,21 @@
   ```
 
 ### Run w/Hot Reload
-  `npm run dev`
+```
+npm run dev
+```
 
 ### Convert Express to Serverless
-  `claudia generate-serverless-express-proxy --express-module dist/server`
+```
+  claudia generate-serverless-express-proxy --express-module dist/server
+```
 
 ### Deploy (https://claudiajs.com/tutorials/installing.html)
-  `claudia create --handler lambda.handler --deploy-proxy-api --region us-east-1`
+```
+  claudia create --handler lambda.handler --deploy-proxy-api --region us-east-1
+```
 
 ### Update Deployment/Redeploy
-  `claudia update`
+``` 
+claudia update 
+```

@@ -5,24 +5,57 @@ const tslint = require('gulp-tslint');
 const mocha = require('gulp-mocha');
 const shell = require('gulp-shell');
 const env = require('gulp-env');
-var ts = require("gulp-typescript");
-var tsProject = ts.createProject("tsconfig.json");
-var outDir = 'dist';
+const ts = require("gulp-typescript");
+const webpack = require('./gulp/webpack');
+const gutil = require('gulp-util');
+
+const tsProject = ts.createProject("tsconfig.json");
+
+const outDir = 'dist';
+const srcDir = 'src';
+
+/**
+ * Set environment
+ */
+gulp.task('env', ['clean'], () => {
+  const envs = env.set({
+    NODE_ENV: 'dev'
+  });
+
+  if(process.env.NODE_ENV !== 'production'){
+    return gulp.src('webpack.config.js')
+      .pipe(gulp.dest(outDir));
+  }
+});
+
+/**
+ * Webpack bundle
+ */
+gulp.task('webpack', ['build'], function(done) {
+  webpack.build().then(function() { done(); });
+});
 
 /**
  * Remove dist directory.
  */
-gulp.task('clean', function () {
-  return gulp.src(outDir, { read: false })
-    .pipe(rimraf());
+gulp.task('clean', () => {
+  return gulp.src(outDir, { read: false }).pipe(rimraf());
 });
 
 /**
  * Copy config files
  */
-gulp.task('configs', (cb) => {
-  return gulp.src("src/configurations/*.json")
-    .pipe(gulp.dest('./dist/configurations'));
+gulp.task('configs', ['clean'], (cb) => {
+  return gulp.src(`${srcDir}/configurations/*.json`)
+    .pipe(gulp.dest(`${outDir}/configurations`));
+});
+
+/**
+ * Copy views
+ */
+gulp.task('views', ['clean'], (cb) => {
+  return gulp.src(`views/**`)
+    .pipe(gulp.dest(`${outDir}/views`));
 });
 
 /**
@@ -36,24 +69,27 @@ gulp.task('watch', shell.task([
  * Lint all custom TypeScript files.
  */
 gulp.task('tslint', () => {
-  return gulp.src('src/**/*.ts')
+  return gulp.src(`${srcDir}/**/*.ts`)
     .pipe(tslint({formatter: "prose"}))
     .pipe(tslint.report());
 });
 
-gulp.task('compile', shell.task([
-  'npm run tsc -p',
-]))
+/**
+ * Compile typescript files
+ */
+gulp.task('ts', ['tslint', 'clean'], () => {
+  return gulp.src(`${srcDir}/**/*.ts`)
+    .pipe(tsProject())
+    .js
+    .pipe(gulp.dest(outDir));
+});
 
 /**
  * Build the project.
  */
-gulp.task('build', ['tslint', 'compile', 'configs'], () => {
-  console.log('Building the project ...');
-
-  return gulp.src('src/**/*.ts')
-    .pipe(tsProject())
-    .js.pipe(gulp.dest("dist"));
+gulp.task('build', ['clean', 'env', 'ts', 'configs', 'views'], () => {
+  return gulp.src(`${srcDir}/**/*.js`)  
+    .pipe(gulp.dest(outDir));
 });
 
 /**
@@ -64,7 +100,7 @@ gulp.task('test', ['build'], (cb) => {
     NODE_ENV: 'test'
   });
 
-  gulp.src(['build/test/**/*.js'])
+  gulp.src([`${outDir}/test/**/*.js`])
     .pipe(envs)
     .pipe(mocha())
     .once('error', (error) => {
@@ -76,4 +112,4 @@ gulp.task('test', ['build'], (cb) => {
     });
 });
 
-gulp.task('default', ['build']);
+gulp.task('default', ['clean', 'build']);

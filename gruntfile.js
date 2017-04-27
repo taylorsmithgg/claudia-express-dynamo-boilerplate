@@ -1,3 +1,5 @@
+
+const webpackConfig = require('./webpack.config');
 const buildDir = './dist';
 
 module.exports = function(grunt) {
@@ -60,6 +62,27 @@ module.exports = function(grunt) {
         tasks: ["copy"]
       }
     },
+    webpack: {
+        options: {
+            stats: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+        },
+        prod: webpackConfig,
+        dev: Object.assign({watch: true}, webpackConfig)
+    },
+    "webpack-dev-server": {
+        options: {
+            webpack: {
+                stats: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+            },
+            prod: webpackConfig,
+        },
+        start: {
+            webpack: {
+                // configuration for this build
+            },
+            // server and middleware options for this build
+        }
+    },
     clean: [buildDir]
   });
 
@@ -67,6 +90,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-contrib-clean");  
   grunt.loadNpmTasks("grunt-ts");
+  grunt.loadNpmTasks("grunt-webpack");
 
   grunt.registerTask("default", [
     "clean",
